@@ -1,8 +1,11 @@
 // LUTs for EPD
 
-pub mod fast;
 pub mod mode;
+
+// Modes
+pub mod fast;
 pub mod official;
+pub mod terminal;
 
 #[derive(Debug)]
 pub struct LutSet {
@@ -21,6 +24,8 @@ pub enum DisplayMode {
     Official,
     /// Fast refresh mode.
     Fast,
+    /// Terminal optimized mode.
+    Terminal,
 }
 
 impl DisplayMode {
@@ -28,6 +33,7 @@ impl DisplayMode {
         match self {
             DisplayMode::Official => official::LUTS,
             DisplayMode::Fast => fast::LUTS,
+            DisplayMode::Terminal => terminal::LUTS,
         }
     }
 }

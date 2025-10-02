@@ -44,7 +44,7 @@ async fn main(_spawner: Spawner) {
     epd.clear().await.expect("Failed to clear display");
 
     // PERF: experiment feature
-    epd.set_mode(DisplayMode::Fast)
+    epd.set_mode(DisplayMode::Terminal)
         .await
         .expect("Failed to set mode");
 

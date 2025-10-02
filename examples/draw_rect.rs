@@ -29,7 +29,6 @@ async fn main(_spawner: Spawner) {
         static _heap_ceiling: u8;
     }
     let heap_end = core::ptr::addr_of!(_heap_ceiling) as usize;
-
     unsafe { ALLOCATOR.init(heap_start, heap_end - heap_start) }
 
     let p = embassy_rp::init(Default::default());
@@ -59,6 +58,10 @@ async fn main(_spawner: Spawner) {
     if epd.clear().await.is_err() {
         panic!();
     }
+
+    epd.set_mode(pico_epd_driver::epd_driver::DisplayMode::Fast)
+        .await
+        .expect("Failed to set mode");
 
     {
         // Draw a chessboard pattern on full screen
