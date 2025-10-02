@@ -83,7 +83,7 @@ async fn main(_spawner: Spawner) {
     }
 
     {
-        // Draw a smaller black rectangle in the center
+        // Draw a smaller chessboard pattern in the center
         let mut view = Box::new([0u8; 200 * 200 / 8]);
         let cb_bits = view.view_bits_mut::<Msb0>();
         for x in 0..200 {
