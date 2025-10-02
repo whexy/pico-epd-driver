@@ -1,0 +1,33 @@
+[package]
+name = "pico-epd-driver"
+version = "0.2.0"
+edition = "2024"
+
+[dependencies]
+bitflags = "2.9"
+bitvec = { version = "1.0", default-features = false }
+cortex-m = "0.7"
+cortex-m-rt = "0.7"
+alloc-cortex-m = "0.4"
+embedded-graphics = "0.8"
+embedded-hal = "1.0"
+embedded-hal-async = "1.0"
+heapless = "0.9"
+panic-probe = "1.0"
+static_cell = "2.1"
+
+
+# embassy
+embassy-executor = { version = "0.9", features = [
+  "arch-cortex-m",
+  "executor-thread",
+] }
+embassy-time = { version = "0.5" }
+embassy-rp = { version = "0.8", features = [
+  "time-driver",
+  "critical-section-impl",
+  "rp235xa",
+  "binary-info",
+] }
+embassy-usb = { version = "0.5" }
+embassy-sync = { version = "0.7" }
