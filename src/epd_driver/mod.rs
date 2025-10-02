@@ -2,6 +2,7 @@ mod bus;
 mod command;
 mod driver;
 mod error;
+mod luts;
 
 pub const WIDTH: usize = 800;
 pub const HEIGHT: usize = 480;
@@ -18,3 +19,4 @@ pub struct Rect {
 pub use bus::EpdBus;
 pub use driver::Epd800x480;
 pub use error::DriverError;
+pub use luts::DisplayMode;

@@ -12,6 +12,7 @@ use embassy_rp::spi::{Config as SpiConfig, Phase, Polarity, Spi};
 use panic_probe as _;
 
 use pico_epd_driver::console::EpdConsole;
+use pico_epd_driver::epd_driver::DisplayMode;
 use pico_epd_driver::epd_driver::{Epd800x480, EpdBus};
 
 #[global_allocator]
@@ -40,6 +41,12 @@ async fn main(_spawner: Spawner) {
     let led = Output::new(p.PIN_25, Level::Low);
     let mut epd = Epd800x480::new(bus, led);
     epd.init().await.expect("Failed to initialize EPD");
+    epd.clear().await.expect("Failed to clear display");
+
+    // PERF: experiment feature
+    epd.set_mode(DisplayMode::Fast)
+        .await
+        .expect("Failed to set mode");
 
     // Initialize console
     let mut console = EpdConsole::new(&mut epd);

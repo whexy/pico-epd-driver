@@ -13,7 +13,7 @@ use super::error::{DriverError, EpdDriverError};
 use super::{BUF_SIZE, HEIGHT, Rect, WIDTH};
 
 pub struct Epd800x480<SPI, CS, DC, RST, BUSY, LED> {
-    bus: EpdBus<SPI, CS, DC, RST, BUSY>,
+    pub bus: EpdBus<SPI, CS, DC, RST, BUSY>,
     led: LED,
 }
 
@@ -52,10 +52,24 @@ where
 
     pub async fn init(&mut self) -> Result<(), DriverError<SPI, CS>> {
         self.hw_reset().await?;
+
+        // Power Setting (PWR)
         self.bus.write_cmd(Command::PowerSetting).await?;
-        self.bus.write_data(&[0x07, 0x07, 0x3f, 0x3f]).await?;
+        self.bus.write_data(&[0x17, 0x17, 0x3f, 0x3f, 0x11]).await?;
+
+        // VCOM and data interval setting
+        self.bus.write_cmd(Command::VcomDc).await?;
+        self.bus.write_data(&[0x24]).await?;
+
+        // Booster Soft Start
         self.bus.write_cmd(Command::Btst).await?;
-        self.bus.write_data(&[0x17, 0x17, 0x28, 0x17]).await?;
+        self.bus.write_data(&[0x27, 0x27, 0x2F, 0x17]).await?;
+
+        // PLL Control
+        self.bus.write_cmd(Command::Pll).await?;
+        self.bus.write_data(&[0x06]).await?; // 50Hz refresh rate
+
+        // Power On
         self.bus.write_cmd(Command::PowerOn).await?;
         self.wait_ready().await?;
         self.bus.write_cmd(Command::PanelSetting).await?;
